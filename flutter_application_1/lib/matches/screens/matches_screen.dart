@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/theme/app_theme.dart';
@@ -17,24 +18,44 @@ class _ChatsScreenState extends State<ChatsScreen> {
 
   bool _isLoading = true;
   List<ChatModel> _chats = [];
+  Timer? _pollTimer;
 
   @override
   void initState() {
     super.initState();
     _loadMatches();
+    // Обновляем список каждые 5 секунд
+    _pollTimer = Timer.periodic(
+      const Duration(seconds: 5),
+      (_) => _pollMatches(),
+    );
   }
 
+  @override
+  void dispose() {
+    _pollTimer?.cancel();
+    super.dispose();
+  }
+
+  // ── Первичная загрузка со спиннером ──────────────────────────────────────
   Future<void> _loadMatches() async {
     if (!mounted) return;
     setState(() => _isLoading = true);
+    await _fetchChats();
+    if (!mounted) return;
+    setState(() => _isLoading = false);
+  }
 
+  // ── Тихое обновление без спиннера ────────────────────────────────────────
+  Future<void> _pollMatches() async {
+    if (!mounted) return;
+    await _fetchChats();
+  }
+
+  Future<void> _fetchChats() async {
     try {
       final userId = _client.auth.currentUser?.id;
-      if (userId == null) {
-        if (!mounted) return;
-        setState(() => _isLoading = false);
-        return;
-      }
+      if (userId == null) return;
 
       final res = await _client
           .from('matches')
@@ -80,33 +101,25 @@ class _ChatsScreenState extends State<ChatsScreen> {
 
         if (!mounted) return;
 
-        final unreadCount = (unreadRes as List).length;
-        final lastMessage = msgRes != null
-            ? msgRes['content'] as String
-            : 'Начните общение!';
-
         chats.add(
           ChatModel(
             id: match['id'],
             name: userRes['full_name'] ?? 'Пользователь',
             age: userRes['age'] ?? 0,
-            lastMessage: lastMessage,
+            lastMessage: msgRes != null
+                ? msgRes['content'] as String
+                : 'Начните общение!',
             avatarUrl: userRes['avatar_url'],
-            unreadCount: unreadCount,
+            unreadCount: (unreadRes as List).length,
             isOnline: false,
           ),
         );
       }
 
       if (!mounted) return;
-      setState(() {
-        _chats = chats;
-        _isLoading = false;
-      });
+      setState(() => _chats = chats);
     } catch (e) {
       debugPrint('Ошибка загрузки чатов: $e');
-      if (!mounted) return;
-      setState(() => _isLoading = false);
     }
   }
 

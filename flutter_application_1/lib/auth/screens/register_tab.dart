@@ -1,4 +1,6 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 import '../controllers/auth_controller.dart';
 import '../widgets/auth_button.dart';
 import '../widgets/gender_dropdown.dart';
@@ -27,6 +29,10 @@ class _RegisterTabState extends State<RegisterTab> {
 
   bool _obscurePass = true;
   bool _isLoading = false;
+  bool _cityValid = false;
+  bool _cityChecking = false;
+
+  List<String> _citySuggestions = [];
 
   @override
   void initState() {
@@ -43,9 +49,6 @@ class _RegisterTabState extends State<RegisterTab> {
     _passCtrl.addListener(
       () => widget.controller.formData.password = _passCtrl.text,
     );
-    _cityCtrl.addListener(
-      () => widget.controller.formData.city = _cityCtrl.text,
-    );
   }
 
   @override
@@ -56,6 +59,74 @@ class _RegisterTabState extends State<RegisterTab> {
     _passCtrl.dispose();
     _cityCtrl.dispose();
     super.dispose();
+  }
+
+  // ── Поиск городов через API ────────────────────────────────────────────────
+  Future<void> _searchCity(String query) async {
+    if (query.length < 2) {
+      setState(() {
+        _citySuggestions = [];
+        _cityValid = false;
+        widget.controller.formData.city = '';
+      });
+      return;
+    }
+
+    setState(() => _cityChecking = true);
+
+    try {
+      // Используем бесплатный GeoDB Cities API
+      final uri = Uri.parse(
+        'https://wft-geo-db.p.rapidapi.com/v1/geo/cities'
+        '?namePrefix=${Uri.encodeComponent(query)}'
+        '&limit=5&languageCode=ru',
+      );
+
+      final res = await http.get(
+        uri,
+        headers: {
+          'x-rapidapi-host': 'wft-geo-db.p.rapidapi.com',
+          'x-rapidapi-key': 'DEMO', // бесплатный ключ с лимитом
+        },
+      );
+
+      if (!mounted) return;
+
+      if (res.statusCode == 200) {
+        final data = jsonDecode(res.body);
+        final cities = (data['data'] as List)
+            .map((c) => '${c['name']}, ${c['country']}')
+            .toList();
+        setState(() => _citySuggestions = List<String>.from(cities));
+      } else {
+        // Fallback — проверяем по локальному списку популярных городов
+        _searchLocalCities(query);
+      }
+    } catch (_) {
+      if (!mounted) return;
+      _searchLocalCities(query);
+    } finally {
+      if (mounted) setState(() => _cityChecking = false);
+    }
+  }
+
+  // ── Локальный список городов (fallback) ───────────────────────────────────
+  void _searchLocalCities(String query) {
+    final q = query.toLowerCase();
+    final matches = _popularCities
+        .where((c) => c.toLowerCase().startsWith(q))
+        .take(5)
+        .toList();
+    setState(() => _citySuggestions = matches);
+  }
+
+  void _selectCity(String city) {
+    _cityCtrl.text = city;
+    widget.controller.formData.city = city;
+    setState(() {
+      _cityValid = true;
+      _citySuggestions = [];
+    });
   }
 
   void _showSnack(String msg) {
@@ -70,6 +141,10 @@ class _RegisterTabState extends State<RegisterTab> {
   }
 
   Future<void> _submit() async {
+    if (!_cityValid && _cityCtrl.text.isNotEmpty) {
+      _showSnack('Выберите город из списка.');
+      return;
+    }
     setState(() => _isLoading = true);
     final error = await widget.controller.register();
     setState(() => _isLoading = false);
@@ -193,12 +268,124 @@ class _RegisterTabState extends State<RegisterTab> {
             ),
             const SizedBox(height: 14),
 
-            // Город
+            // Город с автодополнением
             _label('Город'),
-            TextField(
-              controller: _cityCtrl,
-              style: const TextStyle(color: AppTheme.textDark, fontSize: 14),
-              decoration: _dec('Например: Москва', Icons.location_on_outlined),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                TextField(
+                  controller: _cityCtrl,
+                  style: const TextStyle(
+                    color: AppTheme.textDark,
+                    fontSize: 14,
+                  ),
+                  onChanged: (v) {
+                    setState(() => _cityValid = false);
+                    widget.controller.formData.city = '';
+                    _searchCity(v);
+                  },
+                  decoration: InputDecoration(
+                    hintText: 'Например: Москва',
+                    hintStyle: const TextStyle(
+                      color: AppTheme.textHint,
+                      fontSize: 14,
+                    ),
+                    prefixIcon: const Icon(
+                      Icons.location_on_outlined,
+                      color: AppTheme.textHint,
+                      size: 20,
+                    ),
+                    suffixIcon: _cityChecking
+                        ? const Padding(
+                            padding: EdgeInsets.all(12),
+                            child: SizedBox(
+                              width: 16,
+                              height: 16,
+                              child: CircularProgressIndicator(
+                                color: AppTheme.primary,
+                                strokeWidth: 2,
+                              ),
+                            ),
+                          )
+                        : _cityValid
+                        ? const Icon(
+                            Icons.check_circle,
+                            color: Colors.green,
+                            size: 20,
+                          )
+                        : null,
+                    filled: true,
+                    fillColor: Colors.white,
+                    contentPadding: const EdgeInsets.symmetric(
+                      vertical: 14,
+                      horizontal: 16,
+                    ),
+                    enabledBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: _cityValid ? Colors.green : AppTheme.border,
+                        width: 1.2,
+                      ),
+                    ),
+                    focusedBorder: OutlineInputBorder(
+                      borderRadius: BorderRadius.circular(12),
+                      borderSide: BorderSide(
+                        color: _cityValid ? Colors.green : AppTheme.primary,
+                        width: 1.5,
+                      ),
+                    ),
+                  ),
+                ),
+
+                // Список подсказок
+                if (_citySuggestions.isNotEmpty)
+                  Container(
+                    margin: const EdgeInsets.only(top: 4),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(12),
+                      border: Border.all(color: AppTheme.border, width: 1.2),
+                      boxShadow: [
+                        BoxShadow(
+                          color: AppTheme.primary.withOpacity(0.08),
+                          blurRadius: 8,
+                          offset: const Offset(0, 2),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      children: _citySuggestions.map((city) {
+                        return InkWell(
+                          borderRadius: BorderRadius.circular(12),
+                          onTap: () => _selectCity(city),
+                          child: Padding(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 16,
+                              vertical: 12,
+                            ),
+                            child: Row(
+                              children: [
+                                const Icon(
+                                  Icons.location_on_outlined,
+                                  color: AppTheme.primary,
+                                  size: 16,
+                                ),
+                                const SizedBox(width: 8),
+                                Text(
+                                  city,
+                                  style: const TextStyle(
+                                    color: AppTheme.textDark,
+                                    fontSize: 13,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        );
+                      }).toList(),
+                    ),
+                  ),
+              ],
             ),
             const SizedBox(height: 14),
 
@@ -260,3 +447,63 @@ class _RegisterTabState extends State<RegisterTab> {
     );
   }
 }
+
+// ── Список популярных городов (fallback без интернета) ────────────────────────
+const List<String> _popularCities = [
+  'Москва',
+  'Санкт-Петербург',
+  'Новосибирск',
+  'Екатеринбург',
+  'Казань',
+  'Нижний Новгород',
+  'Челябинск',
+  'Самара',
+  'Омск',
+  'Ростов-на-Дону',
+  'Уфа',
+  'Красноярск',
+  'Пермь',
+  'Воронеж',
+  'Волгоград',
+  'Краснодар',
+  'Саратов',
+  'Тюмень',
+  'Тольятти',
+  'Ижевск',
+  'Барнаул',
+  'Ульяновск',
+  'Иркутск',
+  'Хабаровск',
+  'Владивосток',
+  'Ярославль',
+  'Махачкала',
+  'Томск',
+  'Оренбург',
+  'Кемерово',
+  'Новокузнецк',
+  'Рязань',
+  'Астрахань',
+  'Набережные Челны',
+  'Пенза',
+  'Липецк',
+  'Киров',
+  'Чебоксары',
+  'Тула',
+  'Калининград',
+  'Брянск',
+  'Курск',
+  'Иваново',
+  'Магнитогорск',
+  'Улан-Удэ',
+  'Сочи',
+  'Сургут',
+  'Чита',
+  'Минск',
+  'Алматы',
+  'Астана',
+  'Киев',
+  'Ташкент',
+  'Баку',
+  'Тбилиси',
+  'Ереван',
+];

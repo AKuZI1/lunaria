@@ -24,7 +24,6 @@ class _ChatsScreenState extends State<ChatsScreen> {
   void initState() {
     super.initState();
     _loadMatches();
-    // Обновляем список каждые 5 секунд
     _pollTimer = Timer.periodic(
       const Duration(seconds: 5),
       (_) => _pollMatches(),
@@ -37,7 +36,6 @@ class _ChatsScreenState extends State<ChatsScreen> {
     super.dispose();
   }
 
-  // ── Первичная загрузка со спиннером ──────────────────────────────────────
   Future<void> _loadMatches() async {
     if (!mounted) return;
     setState(() => _isLoading = true);
@@ -46,7 +44,6 @@ class _ChatsScreenState extends State<ChatsScreen> {
     setState(() => _isLoading = false);
   }
 
-  // ── Тихое обновление без спиннера ────────────────────────────────────────
   Future<void> _pollMatches() async {
     if (!mounted) return;
     await _fetchChats();
@@ -59,7 +56,7 @@ class _ChatsScreenState extends State<ChatsScreen> {
 
       final res = await _client
           .from('matches')
-          .select('id, user1_id, user2_id, matched_at')
+          .select('id, user1_id, user2_id')
           .or('user1_id.eq.$userId,user2_id.eq.$userId');
 
       if (!mounted) return;
@@ -128,81 +125,92 @@ class _ChatsScreenState extends State<ChatsScreen> {
     return Scaffold(
       backgroundColor: AppTheme.background,
       body: SafeArea(
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-            Padding(
-              padding: const EdgeInsets.fromLTRB(20, 20, 20, 12),
-              child: Row(
-                children: [
-                  const Icon(
-                    Icons.chat_bubble_outline,
-                    color: AppTheme.textMuted,
-                    size: 22,
-                  ),
-                  const SizedBox(width: 10),
-                  const Text(
-                    'Чаты',
-                    style: TextStyle(
-                      color: AppTheme.textDark,
-                      fontSize: 22,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  const Spacer(),
-                  IconButton(
-                    onPressed: _loadMatches,
-                    icon: const Icon(
-                      Icons.refresh,
-                      color: AppTheme.textMuted,
-                      size: 22,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Expanded(
-              child: _isLoading
-                  ? const Center(
-                      child: CircularProgressIndicator(color: AppTheme.primary),
-                    )
-                  : _chats.isEmpty
-                  ? _emptyState()
-                  : RefreshIndicator(
-                      onRefresh: _loadMatches,
-                      color: AppTheme.primary,
-                      child: ListView.builder(
-                        padding: const EdgeInsets.only(top: 4, bottom: 16),
-                        itemCount: _chats.length,
-                        itemBuilder: (context, index) {
-                          final chat = _chats[index];
-                          return ChatTile(
-                            name: chat.name,
-                            age: chat.age,
-                            lastMessage: chat.lastMessage,
-                            avatarUrl: chat.avatarUrl,
-                            unreadCount: chat.unreadCount,
-                            isOnline: chat.isOnline,
-                            onTap: () =>
-                                Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                    builder: (_) => ChatScreen(
-                                      name: chat.name,
-                                      matchId: chat.id,
-                                      avatarUrl: chat.avatarUrl,
-                                      isOnline: chat.isOnline,
-                                    ),
-                                  ),
-                                ).then((_) {
-                                  if (mounted) _loadMatches();
-                                }),
-                          );
-                        },
+        child: Center(
+          // ✅ Ограничиваем ширину как на мобиле
+          child: ConstrainedBox(
+            constraints: const BoxConstraints(maxWidth: 480),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                // ── Заголовок ───────────────────────────────────────
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(16, 20, 16, 12),
+                  child: Row(
+                    children: [
+                      const Icon(
+                        Icons.chat_bubble_outline,
+                        color: AppTheme.textMuted,
+                        size: 20,
                       ),
-                    ),
+                      const SizedBox(width: 8),
+                      const Text(
+                        'Чаты',
+                        style: TextStyle(
+                          color: AppTheme.textDark,
+                          fontSize: 22,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const Spacer(),
+                      IconButton(
+                        onPressed: _loadMatches,
+                        icon: const Icon(
+                          Icons.refresh,
+                          color: AppTheme.textMuted,
+                          size: 20,
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+
+                // ── Список ──────────────────────────────────────────
+                Expanded(
+                  child: _isLoading
+                      ? const Center(
+                          child: CircularProgressIndicator(
+                            color: AppTheme.primary,
+                          ),
+                        )
+                      : _chats.isEmpty
+                      ? _emptyState()
+                      : RefreshIndicator(
+                          onRefresh: _loadMatches,
+                          color: AppTheme.primary,
+                          child: ListView.builder(
+                            padding: const EdgeInsets.only(top: 4, bottom: 16),
+                            itemCount: _chats.length,
+                            itemBuilder: (context, index) {
+                              final chat = _chats[index];
+                              return ChatTile(
+                                name: chat.name,
+                                age: chat.age,
+                                lastMessage: chat.lastMessage,
+                                avatarUrl: chat.avatarUrl,
+                                unreadCount: chat.unreadCount,
+                                isOnline: chat.isOnline,
+                                onTap: () =>
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => ChatScreen(
+                                          name: chat.name,
+                                          matchId: chat.id,
+                                          avatarUrl: chat.avatarUrl,
+                                          isOnline: chat.isOnline,
+                                        ),
+                                      ),
+                                    ).then((_) {
+                                      if (mounted) _loadMatches();
+                                    }),
+                              );
+                            },
+                          ),
+                        ),
+                ),
+              ],
             ),
-          ],
+          ),
         ),
       ),
     );

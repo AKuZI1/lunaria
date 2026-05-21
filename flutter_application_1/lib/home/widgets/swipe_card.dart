@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
-import '../models/swipe_model.dart'; // ✅ только импорт, не объявление
+import '../models/swipe_model.dart';
 
 class SwipeCard extends StatefulWidget {
   final SwipeModel user;
@@ -45,7 +45,7 @@ class _SwipeCardState extends State<SwipeCard> {
   }
 
   double get _rotation => _dragX * 0.002;
-  double get _opacity => (_dragX.abs() / _threshold).clamp(0, 1);
+  double get _opacity => (_dragX.abs() / _threshold).clamp(0.0, 1.0);
   bool get _isLiking => _dragX > 0;
 
   @override
@@ -65,7 +65,7 @@ class _SwipeCardState extends State<SwipeCard> {
               child: Stack(
                 fit: StackFit.expand,
                 children: [
-                  // Фото / placeholder
+                  // ── Фото / placeholder ──────────────────────────────
                   widget.user.avatarUrl != null
                       ? Image.network(
                           widget.user.avatarUrl!,
@@ -74,7 +74,7 @@ class _SwipeCardState extends State<SwipeCard> {
                         )
                       : _placeholder(),
 
-                  // Градиент снизу
+                  // ── Градиент снизу ──────────────────────────────────
                   Positioned(
                     bottom: 0,
                     left: 0,
@@ -94,7 +94,7 @@ class _SwipeCardState extends State<SwipeCard> {
                     ),
                   ),
 
-                  // Имя и город
+                  // ── Имя и город ─────────────────────────────────────
                   Positioned(
                     bottom: 20,
                     left: 16,
@@ -122,7 +122,7 @@ class _SwipeCardState extends State<SwipeCard> {
                     ),
                   ),
 
-                  // Иконка сердца
+                  // ── Иконка сердца (всегда) ──────────────────────────
                   Positioned(
                     bottom: 20,
                     right: 16,
@@ -133,37 +133,88 @@ class _SwipeCardState extends State<SwipeCard> {
                     ),
                   ),
 
-                  // Оверлей свайпа
-                  if (_isDragging)
+                  // ── Цветной оверлей при свайпе ──────────────────────
+                  if (_isDragging && _opacity > 0.05)
                     Container(
                       color: _isLiking
-                          ? Colors.green.withOpacity(_opacity * 0.3)
-                          : Colors.red.withOpacity(_opacity * 0.3),
+                          ? Colors.green.withOpacity(_opacity * 0.35)
+                          : Colors.red.withOpacity(_opacity * 0.35),
                     ),
 
-                  // Лейбл
-                  if (_isDragging && _opacity > 0.3)
-                    Center(
-                      child: Transform.rotate(
-                        angle: _isLiking ? -0.4 : 0.4,
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                            horizontal: 16,
-                            vertical: 8,
-                          ),
-                          decoration: BoxDecoration(
-                            border: Border.all(
-                              color: _isLiking ? Colors.green : Colors.red,
-                              width: 3,
+                  // ── Иконка ЛАЙК (сердечко) при свайпе вправо ────────
+                  if (_isDragging && _isLiking && _opacity > 0.2)
+                    Positioned(
+                      top: 24,
+                      left: 20,
+                      child: Opacity(
+                        opacity: _opacity.clamp(0.0, 1.0),
+                        child: Transform.rotate(
+                          angle: -0.3,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 14,
+                              vertical: 8,
                             ),
-                            borderRadius: BorderRadius.circular(8),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.green, width: 3),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: const [
+                                Icon(
+                                  Icons.favorite,
+                                  color: Colors.green,
+                                  size: 28,
+                                ),
+                                SizedBox(width: 6),
+                                Text(
+                                  'ЛАЙК',
+                                  style: TextStyle(
+                                    color: Colors.green,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
                           ),
-                          child: Text(
-                            _isLiking ? 'ЛАЙК' : 'НOPE',
-                            style: TextStyle(
-                              color: _isLiking ? Colors.green : Colors.red,
-                              fontSize: 28,
-                              fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                    ),
+
+                  // ── Иконка НOPE (крестик) при свайпе влево ───────────
+                  if (_isDragging && !_isLiking && _opacity > 0.2)
+                    Positioned(
+                      top: 24,
+                      right: 20,
+                      child: Opacity(
+                        opacity: _opacity.clamp(0.0, 1.0),
+                        child: Transform.rotate(
+                          angle: 0.3,
+                          child: Container(
+                            padding: const EdgeInsets.symmetric(
+                              horizontal: 14,
+                              vertical: 8,
+                            ),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.red, width: 3),
+                              borderRadius: BorderRadius.circular(8),
+                            ),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: const [
+                                Icon(Icons.close, color: Colors.red, size: 28),
+                                SizedBox(width: 6),
+                                Text(
+                                  'НOPE',
+                                  style: TextStyle(
+                                    color: Colors.red,
+                                    fontSize: 24,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
                             ),
                           ),
                         ),

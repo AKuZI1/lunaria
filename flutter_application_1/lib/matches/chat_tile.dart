@@ -1,3 +1,5 @@
+// ignore_for_file: deprecated_member_use
+
 import 'package:flutter/material.dart';
 import '../../core/theme/app_theme.dart';
 
@@ -21,40 +23,57 @@ class ChatTile extends StatelessWidget {
     this.isOnline = false,
   });
 
+  // Насыщенные цвета аватара
+  static const _colors = [
+    Color(0xFFAB47BC), // фиолетовый
+    Color(0xFF26A69A), // бирюзовый
+    Color(0xFFEF5350), // красный
+    Color(0xFF42A5F5), // синий
+    Color(0xFF66BB6A), // зелёный
+    Color(0xFFFF7043), // оранжевый
+    Color(0xFFEC407A), // розовый
+    Color(0xFF7E57C2), // лавандовый
+  ];
+
+  Color _avatarColor() => _colors[name.codeUnitAt(0) % _colors.length];
+
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 6),
-        padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 12),
+        margin: const EdgeInsets.symmetric(horizontal: 12, vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
         decoration: BoxDecoration(
           color: Colors.white,
-          borderRadius: BorderRadius.circular(18),
+          borderRadius: BorderRadius.circular(16),
           boxShadow: [
             BoxShadow(
-              color: AppTheme.primary.withOpacity(0.07),
-              blurRadius: 10,
-              offset: const Offset(0, 3),
+              color: AppTheme.primary.withOpacity(0.06),
+              blurRadius: 8,
+              offset: const Offset(0, 2),
             ),
           ],
         ),
         child: Row(
           children: [
-            // ── Аватар ───────────────────────────────────────────────────────
+            // ── Аватар ─────────────────────────────────────────────
             Stack(
               children: [
                 CircleAvatar(
                   radius: 26,
-                  backgroundColor: AppTheme.primaryLight,
+                  backgroundColor: _avatarColor(),
                   backgroundImage: avatarUrl != null
                       ? NetworkImage(avatarUrl!)
                       : null,
                   child: avatarUrl == null
-                      ? const Icon(
-                          Icons.person,
-                          size: 28,
-                          color: AppTheme.primary,
+                      ? Text(
+                          name.isNotEmpty ? name[0].toUpperCase() : '?',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 22,
+                            fontWeight: FontWeight.bold,
+                          ),
                         )
                       : null,
                 ),
@@ -63,8 +82,8 @@ class ChatTile extends StatelessWidget {
                     bottom: 1,
                     right: 1,
                     child: Container(
-                      width: 11,
-                      height: 11,
+                      width: 12,
+                      height: 12,
                       decoration: BoxDecoration(
                         color: const Color(0xFF4CAF50),
                         shape: BoxShape.circle,
@@ -76,7 +95,7 @@ class ChatTile extends StatelessWidget {
             ),
             const SizedBox(width: 12),
 
-            // ── Текст ────────────────────────────────────────────────────────
+            // ── Текст ───────────────────────────────────────────────
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -85,18 +104,23 @@ class ChatTile extends StatelessWidget {
                     '$name, $age',
                     style: const TextStyle(
                       color: AppTheme.textDark,
-                      fontSize: 15,
+                      fontSize: 14,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  const SizedBox(height: 3),
+                  const SizedBox(height: 2),
                   Text(
                     lastMessage,
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
-                    style: const TextStyle(
-                      color: AppTheme.textMuted,
+                    style: TextStyle(
+                      color: unreadCount > 0
+                          ? AppTheme.textDark
+                          : AppTheme.textMuted,
                       fontSize: 13,
+                      fontWeight: unreadCount > 0
+                          ? FontWeight.w500
+                          : FontWeight.normal,
                     ),
                   ),
                 ],
@@ -104,7 +128,7 @@ class ChatTile extends StatelessWidget {
             ),
             const SizedBox(width: 8),
 
-            // ── Бейдж / стрелка ──────────────────────────────────────────────
+            // ── Бейдж / стрелка ─────────────────────────────────────
             if (unreadCount > 0)
               Container(
                 width: 22,

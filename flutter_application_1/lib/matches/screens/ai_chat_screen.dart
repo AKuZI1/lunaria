@@ -14,7 +14,6 @@ class _AiChatScreenState extends State<AiChatScreen> {
   final TextEditingController _inputController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
 
-  // TODO: подключить к AI API
   final List<MessageModel> _messages = const [
     MessageModel(
       id: '1',
@@ -55,7 +54,7 @@ class _AiChatScreenState extends State<AiChatScreen> {
 
   void _sendMessage() {
     if (_inputController.text.trim().isEmpty) return;
-    // TODO: отправка запроса к AI
+    // TODO: подключить AI API
     _inputController.clear();
   }
 
@@ -65,11 +64,11 @@ class _AiChatScreenState extends State<AiChatScreen> {
       backgroundColor: AppTheme.background,
       body: Column(
         children: [
-          // ── AppBar ───────────────────────────────────────────────────────
+          // ── AppBar без кнопки назад ──────────────────────────────────
           SafeArea(
             bottom: false,
             child: Container(
-              padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
               decoration: BoxDecoration(
                 color: AppTheme.background,
                 border: Border(
@@ -78,14 +77,6 @@ class _AiChatScreenState extends State<AiChatScreen> {
               ),
               child: Row(
                 children: [
-                  IconButton(
-                    onPressed: () => Navigator.pop(context),
-                    icon: const Icon(
-                      Icons.chevron_left,
-                      color: AppTheme.textDark,
-                      size: 28,
-                    ),
-                  ),
                   Container(
                     width: 40,
                     height: 40,
@@ -99,35 +90,33 @@ class _AiChatScreenState extends State<AiChatScreen> {
                       size: 20,
                     ),
                   ),
-                  const SizedBox(width: 10),
-                  const Expanded(
-                    child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          'Диалог с ИИ',
-                          style: TextStyle(
-                            color: AppTheme.textDark,
-                            fontSize: 16,
-                            fontWeight: FontWeight.w600,
-                          ),
+                  const SizedBox(width: 12),
+                  const Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      Text(
+                        'Диалог с ИИ',
+                        style: TextStyle(
+                          color: AppTheme.textDark,
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
                         ),
-                        Text(
-                          'AI-ассистент',
-                          style: TextStyle(
-                            color: AppTheme.textHint,
-                            fontSize: 12,
-                          ),
+                      ),
+                      Text(
+                        'AI-ассистент',
+                        style: TextStyle(
+                          color: AppTheme.textHint,
+                          fontSize: 12,
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ],
               ),
             ),
           ),
 
-          // ── Дата ─────────────────────────────────────────────────────────
+          // ── Дата ────────────────────────────────────────────────────
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 12),
             child: Text(
@@ -140,7 +129,7 @@ class _AiChatScreenState extends State<AiChatScreen> {
             ),
           ),
 
-          // ── Сообщения ────────────────────────────────────────────────────
+          // ── Сообщения ────────────────────────────────────────────────
           Expanded(
             child: ListView.builder(
               controller: _scrollController,
@@ -157,7 +146,7 @@ class _AiChatScreenState extends State<AiChatScreen> {
             ),
           ),
 
-          // ── Ввод ─────────────────────────────────────────────────────────
+          // ── Ввод ────────────────────────────────────────────────────
           ChatInput(
             controller: _inputController,
             onSend: _sendMessage,
@@ -169,7 +158,7 @@ class _AiChatScreenState extends State<AiChatScreen> {
   }
 }
 
-// ── Пузырёк ИИ с иконкой ─────────────────────────────────────────────────────
+// ── Пузырёк ИИ ────────────────────────────────────────────────────────────────
 
 class _AiBubble extends StatelessWidget {
   final String text;

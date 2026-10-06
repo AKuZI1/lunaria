@@ -1,0 +1,49 @@
+﻿<Window xmlns="https://github.com/avaloniaui"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        x:Class="AvaloniaApplication1.MainWindow"
+        Title="Project Studio"
+        Width="1100" Height="720"
+        WindowStartupLocation="CenterScreen"
+        Background="{DynamicResource SystemControlBackgroundChromeMediumLowBrush}">
+
+    <Grid ColumnDefinitions="240, *">
+        <Border Grid.Column="0" Background="{DynamicResource SystemControlBackgroundChromeMediumBrush}"
+                Padding="12">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto"/>
+                    <RowDefinition Height="*"/>
+                    <RowDefinition Height="Auto"/>
+                </Grid.RowDefinitions>
+                <StackPanel Grid.Row="0" Orientation="Horizontal" Spacing="10" Margin="0,0,0,20">
+                    <Border Width="32" Height="32" CornerRadius="8" Background="#7C3AED">
+                        <TextBlock Text="" FontSize="16" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Text="Project Studio" FontSize="16" FontWeight="Bold" VerticalAlignment="Center"/>
+                </StackPanel>
+                <StackPanel Grid.Row="1" Spacing="2" VerticalAlignment="Top">
+                    <Button Content="Обзор" Classes="nav-btn active" Tag="Overview" Click="Navigate"/>
+                    <Button Content="Проекты" Classes="nav-btn" Tag="Projects" Click="Navigate"/>
+                    <Button Content="Задачи" Classes="nav-btn" Tag="Tasks" Click="Navigate"/>
+                    <Button Content="Календарь" Classes="nav-btn" Tag="Calendar" Click="Navigate"/>
+                    <Button Content="Команда" Classes="nav-btn" Tag="Team" Click="Navigate"/>
+                    <Button Content="Настройки" Classes="nav-btn" Tag="Settings" Click="Navigate"/>
+                </StackPanel>
+                <StackPanel Grid.Row="2" Spacing="4" Margin="0,0,0,10">
+                    <Border Classes="nav-btn" Padding="12,10" Margin="4,2" CornerRadius="8">
+                        <StackPanel Orientation="Horizontal" Spacing="10">
+                            <Border Width="32" Height="32" CornerRadius="16" Background="#7C3AED">
+                                <TextBlock FontSize="14" HorizontalAlignment="Center" VerticalAlignment="Center" Foreground="White"/>
+                            </Border>
+                            <TextBlock Name="txtUserName" Text="Иван Петров" FontSize="13" VerticalAlignment="Center"
+                                       Foreground="{DynamicResource SystemControlForegroundBaseHighBrush}"/>
+                        </StackPanel>
+                    </Border>
+    
+                    <Button Content="  Выйти" Classes="nav-btn" Click="Logout"/>
+                </StackPanel>
+            </Grid>
+        </Border>
+        <ContentControl Name="PageHost" Grid.Column="1" Margin="24"/>
+    </Grid>
+</Window>

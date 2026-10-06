@@ -1,0 +1,26 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="AvaloniaApplication1.Views.SettingsView">
+    <StackPanel Spacing="24" MaxWidth="600">
+        <TextBlock x:Name="TitleText" FontSize="24" FontWeight="Bold"/>
+        <Border Classes="panel">
+            <StackPanel Spacing="20">
+                <TextBlock x:Name="AppearanceTitle" FontSize="18" FontWeight="SemiBold"/>
+                                <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto">
+                    <StackPanel Grid.Row="0" Grid.Column="0" Spacing="4">
+                        <TextBlock x:Name="ThemeLabel" FontSize="15" FontWeight="SemiBold"/>
+                        <TextBlock x:Name="ThemeDesc" FontSize="13" Foreground="Gray" TextWrapping="Wrap"/>
+                    </StackPanel>
+                    <ToggleSwitch Grid.Row="0" Grid.Column="0" Grid.RowSpan="2"
+                                  Name="ThemeToggle" 
+                                  HorizontalAlignment="Right"
+                                  VerticalAlignment="Center"
+                                  MinWidth="120"
+                                  MinHeight="40"
+                                  FontSize="14"
+                                  IsCheckedChanged="ThemeToggle_IsCheckedChanged"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

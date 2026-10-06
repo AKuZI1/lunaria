@@ -1,0 +1,41 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="AvaloniaApplication1.Views.TeamView">
+    <StackPanel Spacing="20">
+        <TextBlock x:Name="TitleText" FontSize="24" FontWeight="Bold"/>
+        <Grid ColumnDefinitions="*,*,*,*">
+            <Border Classes="panel">
+                <StackPanel HorizontalAlignment="Center" Spacing="8">
+                    <Border Width="64" Height="64" CornerRadius="32" Background="#7C3AED">
+                    </Border>
+                    <TextBlock x:Name="M1Name" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="M1Role" Foreground="Gray" FontSize="12" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="1" Classes="panel">
+                <StackPanel HorizontalAlignment="Center" Spacing="8">
+                    <Border Width="64" Height="64" CornerRadius="32" Background="#3B82F6">
+                    </Border>
+                    <TextBlock x:Name="M2Name" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="M2Role" Foreground="Gray" FontSize="12" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="2" Classes="panel">
+                <StackPanel HorizontalAlignment="Center" Spacing="8">
+                    <Border Width="64" Height="64" CornerRadius="32" Background="#10B981">
+                    </Border>
+                    <TextBlock x:Name="M3Name" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="M3Role" Foreground="Gray" FontSize="12" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+            <Border Grid.Column="3" Classes="panel">
+                <StackPanel HorizontalAlignment="Center" Spacing="8">
+                    <Border Width="64" Height="64" CornerRadius="32" Background="#F59E0B">
+                    </Border>
+                    <TextBlock x:Name="M4Name" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                    <TextBlock x:Name="M4Role" Foreground="Gray" FontSize="12" HorizontalAlignment="Center"/>
+                </StackPanel>
+            </Border>
+        </Grid>
+    </StackPanel>
+</UserControl>

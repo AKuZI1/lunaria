@@ -1,0 +1,38 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="AvaloniaApplication1.Views.TasksView">
+    <StackPanel Spacing="20">
+        <TextBlock x:Name="TitleText" FontSize="24" FontWeight="Bold"/>
+
+        <Border Classes="panel">
+            <StackPanel Spacing="12">
+                <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                    <TextBlock Grid.Column="0" Text="#" FontWeight="SemiBold" Width="30"/>
+                    <TextBlock x:Name="ColName" Grid.Column="1" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="ColCat" Grid.Column="2" FontWeight="SemiBold" Width="120"/>
+                    <TextBlock x:Name="ColDate" Grid.Column="3" FontWeight="SemiBold" Width="100"/>
+                </Grid>
+                <Border Height="1" Background="{DynamicResource SystemControlBackgroundListLowBrush}"/>
+
+                <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                    <CheckBox Grid.Column="0" Width="30"/>
+                    <TextBlock x:Name="T1Name" Grid.Column="1" VerticalAlignment="Center"/>
+                    <Border Grid.Column="2" Classes="badge-design"><TextBlock x:Name="T1Badge"/></Border>
+                    <TextBlock Grid.Column="3" Text="15.05.2024" VerticalAlignment="Center" Foreground="Gray"/>
+                </Grid>
+                <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                    <CheckBox Grid.Column="0" Width="30"/>
+                    <TextBlock x:Name="T2Name" Grid.Column="1" VerticalAlignment="Center"/>
+                    <Border Grid.Column="2" Classes="badge-dev"><TextBlock x:Name="T2Badge"/></Border>
+                    <TextBlock Grid.Column="3" Text="14.05.2024" VerticalAlignment="Center" Foreground="Gray"/>
+                </Grid>
+                <Grid ColumnDefinitions="Auto,*,Auto,Auto">
+                    <CheckBox Grid.Column="0" Width="30"/>
+                    <TextBlock x:Name="T3Name" Grid.Column="1" VerticalAlignment="Center"/>
+                    <Border Grid.Column="2" Classes="badge-marketing"><TextBlock x:Name="T3Badge"/></Border>
+                    <TextBlock Grid.Column="3" Text="13.05.2024" VerticalAlignment="Center" Foreground="Gray"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

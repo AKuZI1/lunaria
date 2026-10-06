@@ -1,0 +1,162 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="AvaloniaApplication1.Views.OverviewView"
+             FontFamily="Segoe UI, Arial">
+    <ScrollViewer>
+        <StackPanel Spacing="20">
+            <TextBlock x:Name="TitleText" FontSize="24" FontWeight="Bold"/>
+
+            <Grid ColumnDefinitions="*,*,*,*">
+                <Border Grid.Column="0" Classes="stat-card">
+                    <StackPanel>
+                        <TextBlock x:Name="ProjectsLabel" FontSize="13" Foreground="Gray"/>
+                        <TextBlock Text="12" FontSize="28" FontWeight="Bold" Margin="0,4,0,0"/>
+                        <TextBlock x:Name="ProjectsSub" FontSize="11" Foreground="Gray"/>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="1" Classes="stat-card">
+                    <StackPanel>
+                        <TextBlock x:Name="TasksLabel" FontSize="13" Foreground="Gray"/>
+                        <TextBlock Text="48" FontSize="28" FontWeight="Bold" Margin="0,4,0,0"/>
+                        <TextBlock x:Name="TasksSub" FontSize="11" Foreground="Gray"/>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="2" Classes="stat-card">
+                    <StackPanel>
+                        <TextBlock x:Name="TeamLabel" FontSize="13" Foreground="Gray"/>
+                        <TextBlock Text="8" FontSize="28" FontWeight="Bold" Margin="0,4,0,0"/>
+                        <TextBlock x:Name="TeamSub" FontSize="11" Foreground="Gray"/>
+                    </StackPanel>
+                </Border>
+                <Border Grid.Column="3" Classes="stat-card">
+                    <StackPanel>
+                        <TextBlock x:Name="DeadlinesLabel" FontSize="13" Foreground="Gray"/>
+                        <TextBlock Text="5" FontSize="28" FontWeight="Bold" Foreground="#EF4444" Margin="0,4,0,0"/>
+                        <TextBlock x:Name="DeadlinesSub" FontSize="11" Foreground="#EF4444"/>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Grid ColumnDefinitions="2*,*">
+                <Border Grid.Column="0" Classes="panel">
+                    <StackPanel Spacing="16">
+                        <TextBlock x:Name="ActiveProjectsTitle" FontSize="16" FontWeight="SemiBold"/>
+
+                        <StackPanel Spacing="6">
+                            <Grid ColumnDefinitions="*,Auto,Auto">
+                                <TextBlock Text="Avalonia UI Redesign" FontWeight="SemiBold"/>
+                                <Border Grid.Column="1" Classes="badge-design" Margin="0,0,16,0">
+                                    <TextBlock x:Name="Project1DesignBadge"/>
+                                </Border>
+                                <TextBlock Grid.Column="2" Text="65%" FontSize="13" Foreground="Gray"/>
+                            </Grid>
+                            <ProgressBar Value="65" Classes="purple" Height="6"/>
+                        </StackPanel>
+
+                        <StackPanel Spacing="6">
+                            <Grid ColumnDefinitions="*,Auto,Auto">
+                                <TextBlock x:Name="Project1Name" FontWeight="SemiBold"/>
+                                <Border Grid.Column="1" Classes="badge-dev" Margin="0,0,16,0">
+                                    <TextBlock x:Name="Project1Badge"/>
+                                </Border>
+                                <TextBlock Grid.Column="2" Text="40%" FontSize="13" Foreground="Gray"/>
+                            </Grid>
+                            <ProgressBar Value="40" Classes="blue" Height="6"/>
+                        </StackPanel>
+
+                        <StackPanel Spacing="6">
+                            <Grid ColumnDefinitions="*,Auto,Auto">
+                                <TextBlock x:Name="Project2Name" FontWeight="SemiBold"/>
+                                <Border Grid.Column="1" Classes="badge-dev" Margin="0,0,16,0">
+                                    <TextBlock x:Name="Project2Badge"/>
+                                </Border>
+                                <TextBlock Grid.Column="2" Text="80%" FontSize="13" Foreground="Gray"/>
+                            </Grid>
+                            <ProgressBar Value="80" Classes="green" Height="6"/>
+                        </StackPanel>
+                    </StackPanel>
+                </Border>
+
+                <Border Grid.Column="1" Classes="panel">
+                    <StackPanel Spacing="12">
+                        <Grid ColumnDefinitions="Auto,*,Auto">
+                            <Button Content="&lt;" Classes="nav-btn" Width="32" Height="32" Padding="0"/>
+                            <TextBlock x:Name="CalendarTitle" FontSize="15" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                            <Button Content="&gt;" Classes="nav-btn" Width="32" Height="32" Padding="0"/>
+                        </Grid>
+                        <Grid ColumnDefinitions="*,*,*,*,*,*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+                            <TextBlock x:Name="DayMon" Grid.Row="0" Grid.Column="0" FontSize="11" Foreground="Gray" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="DayTue" Grid.Row="0" Grid.Column="1" FontSize="11" Foreground="Gray" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="DayWed" Grid.Row="0" Grid.Column="2" FontSize="11" Foreground="Gray" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="DayThu" Grid.Row="0" Grid.Column="3" FontSize="11" Foreground="Gray" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="DayFri" Grid.Row="0" Grid.Column="4" FontSize="11" Foreground="Gray" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="DaySat" Grid.Row="0" Grid.Column="5" FontSize="11" Foreground="Gray" HorizontalAlignment="Center"/>
+                            <TextBlock x:Name="DaySun" Grid.Row="0" Grid.Column="6" FontSize="11" Foreground="Gray" HorizontalAlignment="Center"/>
+
+                            <TextBlock Grid.Row="2" Grid.Column="0" Text="6" HorizontalAlignment="Center" Padding="4"/>
+                            <TextBlock Grid.Row="2" Grid.Column="1" Text="7" HorizontalAlignment="Center" Padding="4"/>
+                            <TextBlock Grid.Row="2" Grid.Column="2" Text="8" HorizontalAlignment="Center" Padding="4"/>
+                            <TextBlock Grid.Row="2" Grid.Column="3" Text="9" HorizontalAlignment="Center" Padding="4"/>
+                            <TextBlock Grid.Row="2" Grid.Column="4" Text="10" HorizontalAlignment="Center" Padding="4"/>
+                            <TextBlock Grid.Row="2" Grid.Column="5" Text="11" HorizontalAlignment="Center" Padding="4"/>
+                            <TextBlock Grid.Row="2" Grid.Column="6" Text="12" HorizontalAlignment="Center" Padding="4"/>
+
+                            <TextBlock Grid.Row="3" Grid.Column="0" Text="13" HorizontalAlignment="Center" Padding="4"/>
+                            <TextBlock Grid.Row="3" Grid.Column="1" Text="14" HorizontalAlignment="Center" Padding="4"/>
+                            <Border Grid.Row="3" Grid.Column="2" Background="#7C3AED" CornerRadius="14" Width="32" Height="32" HorizontalAlignment="Center">
+                                <TextBlock Text="15" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center" FontSize="13"/>
+                            </Border>
+                            <TextBlock Grid.Row="3" Grid.Column="3" Text="16" HorizontalAlignment="Center" Padding="4"/>
+                            <TextBlock Grid.Row="3" Grid.Column="4" Text="17" HorizontalAlignment="Center" Padding="4"/>
+                            <TextBlock Grid.Row="3" Grid.Column="5" Text="18" HorizontalAlignment="Center" Padding="4"/>
+                            <TextBlock Grid.Row="3" Grid.Column="6" Text="19" HorizontalAlignment="Center" Padding="4"/>
+
+                            <TextBlock Grid.Row="4" Grid.Column="0" Text="20" HorizontalAlignment="Center" Padding="4"/>
+                            <TextBlock Grid.Row="4" Grid.Column="1" Text="21" HorizontalAlignment="Center" Padding="4"/>
+                            <TextBlock Grid.Row="4" Grid.Column="2" Text="22" HorizontalAlignment="Center" Padding="4"/>
+                            <TextBlock Grid.Row="4" Grid.Column="3" Text="23" HorizontalAlignment="Center" Padding="4"/>
+                            <TextBlock Grid.Row="4" Grid.Column="4" Text="24" HorizontalAlignment="Center" Padding="4"/>
+                            <TextBlock Grid.Row="4" Grid.Column="5" Text="25" HorizontalAlignment="Center" Padding="4"/>
+                            <TextBlock Grid.Row="4" Grid.Column="6" Text="26" HorizontalAlignment="Center" Padding="4"/>
+
+                            <TextBlock Grid.Row="5" Grid.Column="0" Text="27" HorizontalAlignment="Center" Padding="4"/>
+                            <TextBlock Grid.Row="5" Grid.Column="1" Text="28" HorizontalAlignment="Center" Padding="4"/>
+                            <TextBlock Grid.Row="5" Grid.Column="2" Text="29" HorizontalAlignment="Center" Padding="4"/>
+                            <TextBlock Grid.Row="5" Grid.Column="3" Text="30" HorizontalAlignment="Center" Padding="4"/>
+                            <TextBlock Grid.Row="5" Grid.Column="4" Text="31" HorizontalAlignment="Center" Padding="4"/>
+                        </Grid>
+                    </StackPanel>
+                </Border>
+            </Grid>
+
+            <Border Classes="panel">
+                <StackPanel Spacing="12">
+                    <TextBlock x:Name="RecentTasksTitle" FontSize="16" FontWeight="SemiBold"/>
+
+                    <Grid ColumnDefinitions="Auto,*,Auto,Auto" RowDefinitions="Auto,Auto,Auto">
+                        <CheckBox Grid.Row="0" Grid.Column="0" Margin="0,0,12,0"/>
+                        <TextBlock x:Name="Task1Name" Grid.Row="0" Grid.Column="1" VerticalAlignment="Center"/>
+                        <Border Grid.Row="0" Grid.Column="2" Classes="badge-design" Margin="0,0,16,0">
+                            <TextBlock x:Name="Task1Badge"/>
+                        </Border>
+                        <TextBlock Grid.Row="0" Grid.Column="3" Text="15.05.2024" Foreground="Gray" FontSize="13" VerticalAlignment="Center"/>
+
+                        <CheckBox Grid.Row="1" Grid.Column="0" Margin="0,0,12,0"/>
+                        <TextBlock x:Name="Task2Name" Grid.Row="1" Grid.Column="1" VerticalAlignment="Center"/>
+                        <Border Grid.Row="1" Grid.Column="2" Classes="badge-dev" Margin="0,0,16,0">
+                            <TextBlock x:Name="Task2Badge"/>
+                        </Border>
+                        <TextBlock Grid.Row="1" Grid.Column="3" Text="14.05.2024" Foreground="Gray" FontSize="13" VerticalAlignment="Center"/>
+
+                        <CheckBox Grid.Row="2" Grid.Column="0" Margin="0,0,12,0"/>
+                        <TextBlock x:Name="Task3Name" Grid.Row="2" Grid.Column="1" VerticalAlignment="Center"/>
+                        <Border Grid.Row="2" Grid.Column="2" Classes="badge-marketing" Margin="0,0,16,0">
+                            <TextBlock x:Name="Task3Badge"/>
+                        </Border>
+                        <TextBlock Grid.Row="2" Grid.Column="3" Text="13.05.2024" Foreground="Gray" FontSize="13" VerticalAlignment="Center"/>
+                    </Grid>
+                </StackPanel>
+            </Border>
+        </StackPanel>
+    </ScrollViewer>
+</UserControl>

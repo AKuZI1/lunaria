@@ -1,0 +1,33 @@
+﻿<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="AvaloniaApplication1.Views.ProfileView">
+    <StackPanel Spacing="20" MaxWidth="600">
+        <TextBlock x:Name="TitleText" FontSize="24" FontWeight="Bold"/>
+
+        <Border Classes="panel">
+            <StackPanel Spacing="16" HorizontalAlignment="Center">
+                <Border Width="96" Height="96" CornerRadius="48" Background="#7C3AED" HorizontalAlignment="Center">
+                    <TextBlock Text="👤" FontSize="40" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                </Border>
+                <TextBlock x:Name="FullNameText" FontSize="22" FontWeight="Bold" HorizontalAlignment="Center"/>
+                <TextBlock x:Name="PositionText" Foreground="Gray" HorizontalAlignment="Center"/>
+            </StackPanel>
+        </Border>
+
+        <Border Classes="panel">
+            <StackPanel Spacing="12">
+                <TextBlock x:Name="InfoTitle" FontSize="16" FontWeight="SemiBold"/>
+                <Grid ColumnDefinitions="150,*" RowDefinitions="Auto,Auto,Auto">
+                    <TextBlock x:Name="LblFio" Grid.Row="0" Grid.Column="0" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="ValFio" Grid.Row="0" Grid.Column="1" FontSize="14"/>
+
+                    <TextBlock x:Name="LblPos" Grid.Row="1" Grid.Column="0" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="ValPos" Grid.Row="1" Grid.Column="1" FontSize="14"/>
+
+                    <TextBlock x:Name="LblStatus" Grid.Row="2" Grid.Column="0" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="ValStatus" Grid.Row="2" Grid.Column="1" Foreground="#10B981" FontSize="14"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>

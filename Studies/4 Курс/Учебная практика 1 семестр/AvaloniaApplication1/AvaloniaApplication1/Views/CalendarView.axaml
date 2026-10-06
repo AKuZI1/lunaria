@@ -1,0 +1,57 @@
+<UserControl xmlns="https://github.com/avaloniaui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             x:Class="AvaloniaApplication1.Views.CalendarView">
+    <StackPanel Spacing="20">
+        <TextBlock x:Name="TitleText" FontSize="24" FontWeight="Bold"/>
+        <Border Classes="panel" MaxWidth="600" HorizontalAlignment="Left">
+            <StackPanel Spacing="16">
+                <Grid ColumnDefinitions="Auto,*,Auto">
+                    <Button Content="&lt;" Classes="nav-btn" Width="36" Height="36"/>
+                    <TextBlock x:Name="MonthText" FontSize="18" FontWeight="SemiBold" HorizontalAlignment="Center"/>
+                    <Button Content="&gt;" Classes="nav-btn" Width="36" Height="36"/>
+                </Grid>
+                <Grid ColumnDefinitions="*,*,*,*,*,*,*" RowDefinitions="Auto,Auto,Auto,Auto,Auto,Auto">
+                    <TextBlock x:Name="D1" Grid.Row="0" Grid.Column="0" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="D2" Grid.Row="0" Grid.Column="1" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="D3" Grid.Row="0" Grid.Column="2" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="D4" Grid.Row="0" Grid.Column="3" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="D5" Grid.Row="0" Grid.Column="4" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="D6" Grid.Row="0" Grid.Column="5" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+                    <TextBlock x:Name="D7" Grid.Row="0" Grid.Column="6" HorizontalAlignment="Center" FontWeight="SemiBold"/>
+
+                    <TextBlock Grid.Row="2" Grid.Column="0" Text="6" HorizontalAlignment="Center" Padding="8"/>
+                    <TextBlock Grid.Row="2" Grid.Column="1" Text="7" HorizontalAlignment="Center" Padding="8"/>
+                    <TextBlock Grid.Row="2" Grid.Column="2" Text="8" HorizontalAlignment="Center" Padding="8"/>
+                    <TextBlock Grid.Row="2" Grid.Column="3" Text="9" HorizontalAlignment="Center" Padding="8"/>
+                    <TextBlock Grid.Row="2" Grid.Column="4" Text="10" HorizontalAlignment="Center" Padding="8"/>
+                    <TextBlock Grid.Row="2" Grid.Column="5" Text="11" HorizontalAlignment="Center" Padding="8"/>
+                    <TextBlock Grid.Row="2" Grid.Column="6" Text="12" HorizontalAlignment="Center" Padding="8"/>
+
+                    <TextBlock Grid.Row="3" Grid.Column="0" Text="13" HorizontalAlignment="Center" Padding="8"/>
+                    <TextBlock Grid.Row="3" Grid.Column="1" Text="14" HorizontalAlignment="Center" Padding="8"/>
+                    <Border Grid.Row="3" Grid.Column="2" Background="#7C3AED" CornerRadius="16" Width="36" Height="36" HorizontalAlignment="Center">
+                        <TextBlock Text="15" Foreground="White" HorizontalAlignment="Center" VerticalAlignment="Center"/>
+                    </Border>
+                    <TextBlock Grid.Row="3" Grid.Column="3" Text="16" HorizontalAlignment="Center" Padding="8"/>
+                    <TextBlock Grid.Row="3" Grid.Column="4" Text="17" HorizontalAlignment="Center" Padding="8"/>
+                    <TextBlock Grid.Row="3" Grid.Column="5" Text="18" HorizontalAlignment="Center" Padding="8"/>
+                    <TextBlock Grid.Row="3" Grid.Column="6" Text="19" HorizontalAlignment="Center" Padding="8"/>
+
+                    <TextBlock Grid.Row="4" Grid.Column="0" Text="20" HorizontalAlignment="Center" Padding="8"/>
+                    <TextBlock Grid.Row="4" Grid.Column="1" Text="21" HorizontalAlignment="Center" Padding="8"/>
+                    <TextBlock Grid.Row="4" Grid.Column="2" Text="22" HorizontalAlignment="Center" Padding="8"/>
+                    <TextBlock Grid.Row="4" Grid.Column="3" Text="23" HorizontalAlignment="Center" Padding="8"/>
+                    <TextBlock Grid.Row="4" Grid.Column="4" Text="24" HorizontalAlignment="Center" Padding="8"/>
+                    <TextBlock Grid.Row="4" Grid.Column="5" Text="25" HorizontalAlignment="Center" Padding="8"/>
+                    <TextBlock Grid.Row="4" Grid.Column="6" Text="26" HorizontalAlignment="Center" Padding="8"/>
+
+                    <TextBlock Grid.Row="5" Grid.Column="0" Text="27" HorizontalAlignment="Center" Padding="8"/>
+                    <TextBlock Grid.Row="5" Grid.Column="1" Text="28" HorizontalAlignment="Center" Padding="8"/>
+                    <TextBlock Grid.Row="5" Grid.Column="2" Text="29" HorizontalAlignment="Center" Padding="8"/>
+                    <TextBlock Grid.Row="5" Grid.Column="3" Text="30" HorizontalAlignment="Center" Padding="8"/>
+                    <TextBlock Grid.Row="5" Grid.Column="4" Text="31" HorizontalAlignment="Center" Padding="8"/>
+                </Grid>
+            </StackPanel>
+        </Border>
+    </StackPanel>
+</UserControl>
